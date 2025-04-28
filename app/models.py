@@ -9,6 +9,7 @@ class OrganizationSetting(models.Model):
     address = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -20,6 +21,7 @@ class Restaurant(models.Model):
     logo = models.ImageField(upload_to='restaurant_logos/', blank=True, null=True)  
     address = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -29,6 +31,7 @@ class FoodCategory(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='food_categories/', blank=True, null=True)  
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -48,6 +51,7 @@ class Food(models.Model):
     food_type = models.CharField(max_length=255, choices=food_type_choices, blank=True, null=True)
     category = models.ForeignKey(FoodCategory, on_delete=models.CASCADE, related_name='foods', null=True, blank=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='foods', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -60,6 +64,7 @@ class Customer(models.Model):
     password = models.CharField(blank=True, null=True)
     address = models.CharField(blank=True, null=True)
     image = models.ImageField(upload_to='customers/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -90,7 +95,7 @@ class Order(models.Model):
     delivery_charge = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     note = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.customer.name + " - " + str(self.id)
@@ -102,6 +107,7 @@ class OrderItem(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.IntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.food.name + " - " + str(self.order.id) + " - " + str(self.quantity)
@@ -111,6 +117,7 @@ class Banner(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='banners/', blank=True, null=True) 
     url = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -120,6 +127,7 @@ class Rating(models.Model):
     star = models.IntegerField(default=0)
     food = models.ForeignKey(Food, on_delete=models.CASCADE, related_name='ratings')
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='ratings')
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return str(self.star) + " - " + self.food.name + " - " + self.customer.name
