@@ -20,3 +20,11 @@ def home(request):
         'popular_items': FoodSerializer(popular_items, many=True).data
     }
     return Response(data)
+
+
+@api_view(['GET'])
+def singleCategory(request, id):
+    data = {
+        'category': FoodCategorySerializer(FoodCategory.objects.get(id=id), many=False).data,
+    }
+    return Response(data)
