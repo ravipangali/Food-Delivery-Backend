@@ -78,6 +78,8 @@ SESSION_COOKIE_HTTPONLY = True
 
 ROOT_URLCONF = 'food_delivery_backend.urls'
 
+AUTH_USER_MODEL = 'app.MyUser'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

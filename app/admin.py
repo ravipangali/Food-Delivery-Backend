@@ -1,8 +1,15 @@
 from django.contrib import admin
-from app.models import (Banner, Customer, Food, FoodCategory, Order, OrderItem,
+from app.models import (Banner, MyUser, Food, FoodCategory, Order, OrderItem,
     OrganizationSetting, Rating, Restaurant)
 
 # Register your models here.
+@admin.register(MyUser)
+class MyUser(admin.ModelAdmin):
+    list_display = ('id', 'phone', 'is_customer', 'is_superuser')
+    search_fields = ('phone', 'is_customer', 'is_superuser')
+    list_filter = ('phone', 'is_customer', 'is_superuser')
+
+
 @admin.register(OrganizationSetting)
 class OrganizationSettingAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'logo', 'address', 'phone', 'email')
@@ -31,11 +38,11 @@ class FoodAdmin(admin.ModelAdmin):
     list_filter = ('name','price','discount','food_type', 'category', 'restaurant')
 
 
-@admin.register(Customer)
-class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'phone','address')
-    search_fields = ('name','phone','address')
-    list_filter = ('name','phone','address')
+# @admin.register(Customer)
+# class CustomerAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'name', 'phone','address')
+#     search_fields = ('name','phone','address')
+#     list_filter = ('name','phone','address')
 
 
 @admin.register(Banner)
@@ -47,9 +54,9 @@ class BannerAdmin(admin.ModelAdmin):
 
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'food', 'customer', 'star')
-    search_fields = ('food','customer','star')
-    list_filter = ('food','customer','star')
+    list_display = ('id', 'food', 'user', 'star')
+    search_fields = ('food','user','star')
+    list_filter = ('food','user','star')
 
 
 
@@ -61,6 +68,6 @@ class OrderItemInline(admin.StackedInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
-    list_display = ('id', 'customer', 'address', 'total', 'status')
-    search_fields = ('customer', 'address', 'total','status')
-    list_filter = ('customer', 'address', 'total','status')
+    list_display = ('id', 'user', 'address', 'total', 'status')
+    search_fields = ('user', 'address', 'total','status')
+    list_filter = ('user', 'address', 'total','status')

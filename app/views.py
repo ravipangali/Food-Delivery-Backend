@@ -6,9 +6,30 @@ from django.db.models import Count, Prefetch
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
 
 
 # Auth API
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+    confirm_password = request.data.get('confirm_password')
+
+    if password != confirm_password:
+        return Response({'message': 'Passwords do not match'})
+    
+    if User.objects.filter(username=username).exists():
+        return Response({'message': 'Username already exists'})
+    
+    user = User(username=username, email=email, password=password, is_staff=True)
+    user.save()
+    auth_login(request, user)
+    return Response({'message': 'User created successfully'})
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):

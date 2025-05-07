@@ -1,4 +1,4 @@
-from app.models import (Banner, Customer, Food, FoodCategory, Order, OrderItem,
+from app.models import (Banner, MyUser, Food, FoodCategory, Order, OrderItem,
     OrganizationSetting, Rating, Restaurant)
 from rest_framework import serializers
 
@@ -49,10 +49,10 @@ class OrderSerializer(serializers.ModelSerializer):
         depth = 10
         fields = ('id', 'status', 'customer', 'address', 'latitude', 'longitude', 'phone', 'sub_total', 'delivery_charge', 'total', 'note', 'created_at', 'order_items')
 
-class CustomerSerializer(serializers.ModelSerializer):
+class MyUserSerializer(serializers.ModelSerializer):
     orders = OrderSerializer(many=True, read_only=True).data
     class Meta:
-        model = Customer
+        model = MyUser
         depth = 10
         fields = ('id', 'name', 'phone', 'address', 'image', 'orders')
 

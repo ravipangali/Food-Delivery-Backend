@@ -3,6 +3,7 @@ from app import views
 
 urlpatterns = [
     # Auth Urls
+    path('register', views.register),
     path('login', views.login),
     path('logout', views.logout),
 
