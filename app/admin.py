@@ -4,7 +4,7 @@ from app.models import (Banner, MyUser, Food, FoodCategory, Order, OrderItem,
 
 # Register your models here.
 @admin.register(MyUser)
-class MyUser(admin.ModelAdmin):
+class MyUserAdmin(admin.ModelAdmin):
     list_display = ('id', 'phone', 'is_customer', 'is_superuser')
     search_fields = ('phone', 'is_customer', 'is_superuser')
     list_filter = ('phone', 'is_customer', 'is_superuser')

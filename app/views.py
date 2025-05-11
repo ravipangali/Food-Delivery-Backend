@@ -6,25 +6,25 @@ from django.db.models import Count, Prefetch
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.models import User
+from app.models import MyUser
 
 
 # Auth API
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
-    username = request.data.get('username')
-    email = request.data.get('email')
+    name = request.data.get('name')
+    phone = request.data.get('phone')
     password = request.data.get('password')
     confirm_password = request.data.get('confirm_password')
 
     if password != confirm_password:
         return Response({'message': 'Passwords do not match'})
     
-    if User.objects.filter(username=username).exists():
+    if MyUser.objects.filter(phone=phone).exists():
         return Response({'message': 'Username already exists'})
     
-    user = User(username=username, email=email, password=password, is_staff=True)
+    user = MyUser(name=name, phone=phone, password=password)
     user.save()
     auth_login(request, user)
     return Response({'message': 'User created successfully'})
@@ -33,10 +33,10 @@ def register(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
-    username = request.data.get('username')
+    phone = request.data.get('phone')
     password = request.data.get('password')
 
-    user = authenticate(request, username=username, password=password)
+    user = authenticate(request, phone=phone, password=password)
     if user is not None:
         auth_login(request, user)
         return Response({'message': 'Login successful'}) 
